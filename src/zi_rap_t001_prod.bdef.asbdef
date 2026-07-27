@@ -1,0 +1,38 @@
+managed implementation in class zbp_i_rap_t001_prod unique;
+strict;
+
+define behavior for ZI_RAP_T001_PROD alias Product
+persistent table zrap_t001_prod
+lock master
+authorization master ( global )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly, numbering : managed ) ProductUuid;
+
+  field ( readonly )
+    CreatedBy,
+    CreatedAt,
+    LastChangedBy,
+    LastChangedAt,
+    LocalLastChangedAt;
+
+  mapping for zrap_t001_prod
+  {
+    ProductUuid        = product_uuid;
+    ProductId          = product_id;
+    ProductName        = product_name;
+    Price              = price;
+    CurrencyCode       = currency_code;
+    Stock              = stock;
+    Status             = status;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedBy      = last_changed_by;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}

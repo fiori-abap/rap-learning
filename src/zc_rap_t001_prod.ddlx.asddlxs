@@ -1,0 +1,71 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Product',
+    typeNamePlural: 'Products',
+    title: {
+      type: #STANDARD,
+      value: 'ProductName'
+    },
+    description: {
+      type: #STANDARD,
+      value: 'ProductId'
+    }
+  }
+}
+annotate view ZC_RAP_T001_PROD with
+{
+  @UI.hidden: true
+  ProductUuid;
+
+  @UI.facet: [
+    {
+      id: 'ProductInfo',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Product Information',
+      position: 10
+    }
+  ]
+
+  @UI.lineItem: [{ position: 10, label: 'Product ID' }]
+  @UI.selectionField: [{ position: 10 }]
+  @UI.identification: [{ position: 10, label: 'Product ID' }]
+  ProductId;
+
+  @UI.lineItem: [{ position: 20, label: 'Product Name' }]
+  @UI.selectionField: [{ position: 20 }]
+  @UI.identification: [{ position: 20, label: 'Product Name' }]
+  ProductName;
+
+  @UI.lineItem: [{ position: 30, label: 'Price' }]
+  @UI.identification: [{ position: 30, label: 'Price' }]
+  Price;
+
+  @UI.lineItem: [{ position: 40, label: 'Currency' }]
+  @UI.identification: [{ position: 40, label: 'Currency' }]
+  CurrencyCode;
+
+  @UI.lineItem: [{ position: 50, label: 'Stock' }]
+  @UI.identification: [{ position: 50, label: 'Stock' }]
+  Stock;
+
+  @UI.lineItem: [{ position: 60, label: 'Status' }]
+  @UI.identification: [{ position: 60, label: 'Status' }]
+  Status;
+
+  @UI.hidden: true
+  CreatedBy;
+
+  @UI.hidden: true
+  CreatedAt;
+
+  @UI.hidden: true
+  LastChangedBy;
+
+  @UI.hidden: true
+  LastChangedAt;
+
+  @UI.hidden: true
+  LocalLastChangedAt;
+}

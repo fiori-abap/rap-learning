@@ -1,0 +1,4 @@
+@EndUserText.label: 'CAP Carrier Service'
+define service Zui_cap_carrier {
+  expose ZI_CAP_CARRIER;
+}
