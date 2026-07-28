@@ -1,0 +1,297 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Sales Order Item',
+    typeNamePlural: 'Sales Order Items',
+    title: {
+      type: #STANDARD,
+      value: 'SalesOrder'
+    },
+    description: {
+      type: #STANDARD,
+      value: 'SalesOrderItem'
+    }
+  }
+}
+annotate view ZC_RAP_T002_SO with
+{
+  @UI.facet: [
+    {
+      id: 'SalesOrderInfo',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Sales Order Information',
+      position: 10
+    }
+  ]
+
+  @UI.lineItem: [
+    {
+      position: 10,
+      label: 'Sales Order'
+    }
+  ]
+  @UI.selectionField: [
+    {
+      position: 10
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 10,
+      label: 'Sales Order'
+    }
+  ]
+  SalesOrder;
+
+  @UI.lineItem: [
+    {
+      position: 20,
+      label: 'Item'
+    }
+  ]
+  @UI.selectionField: [
+    {
+      position: 20
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 20,
+      label: 'Item'
+    }
+  ]
+  SalesOrderItem;
+
+  @UI.lineItem: [
+    {
+      position: 30,
+      label: 'Order Type'
+    }
+  ]
+  @UI.selectionField: [
+    {
+      position: 30
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 30,
+      label: 'Order Type'
+    }
+  ]
+  SalesOrderType;
+
+  @UI.lineItem: [
+    {
+      position: 40,
+      label: 'Order Date'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 40,
+      label: 'Order Date'
+    }
+  ]
+  SalesOrderDate;
+
+  @UI.lineItem: [
+    {
+      position: 50,
+      label: 'Sales Organization'
+    }
+  ]
+  @UI.selectionField: [
+    {
+      position: 40
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 50,
+      label: 'Sales Organization'
+    }
+  ]
+  SalesOrganization;
+
+  @UI.identification: [
+    {
+      position: 60,
+      label: 'Distribution Channel'
+    }
+  ]
+  DistributionChannel;
+
+  @UI.identification: [
+    {
+      position: 70,
+      label: 'Division'
+    }
+  ]
+  Division;
+
+  @UI.lineItem: [
+    {
+      position: 60,
+      label: 'Sold-to Party'
+    }
+  ]
+  @UI.selectionField: [
+    {
+      position: 50
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 80,
+      label: 'Sold-to Party'
+    }
+  ]
+  SoldToParty;
+
+  @UI.lineItem: [
+    {
+      position: 70,
+      label: 'Material'
+    }
+  ]
+  @UI.selectionField: [
+    {
+      position: 60
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 90,
+      label: 'Material'
+    }
+  ]
+  Material;
+
+  @UI.lineItem: [
+    {
+      position: 80,
+      label: 'Description'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 100,
+      label: 'Material Description'
+    }
+  ]
+  MaterialDescription;
+
+  @UI.identification: [
+    {
+      position: 110,
+      label: 'Plant'
+    }
+  ]
+  Plant;
+
+  @UI.lineItem: [
+    {
+      position: 90,
+      label: 'Order Quantity'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 120,
+      label: 'Order Quantity'
+    }
+  ]
+  OrderQuantity;
+
+  @UI.lineItem: [
+    {
+      position: 100,
+      label: 'Sales Unit'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 130,
+      label: 'Sales Unit'
+    }
+  ]
+  SalesUnit;
+
+  @UI.lineItem: [
+    {
+      position: 110,
+      label: 'Net Amount'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 140,
+      label: 'Net Amount'
+    }
+  ]
+  NetAmount;
+
+  @UI.lineItem: [
+    {
+      position: 120,
+      label: 'Currency'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 150,
+      label: 'Currency'
+    }
+  ]
+  TransactionCurrency;
+
+  @UI.lineItem: [
+    {
+      position: 130,
+      label: 'Addon Status'
+    }
+  ]
+  @UI.selectionField: [
+    {
+      position: 70
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 160,
+      label: 'Addon Status'
+    }
+  ]
+  AddonStatus;
+
+  @UI.lineItem: [
+    {
+      position: 140,
+      label: 'Addon Remark'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 170,
+      label: 'Addon Remark'
+    }
+  ]
+  AddonRemark;
+
+  @UI.hidden: true
+  CreatedBy;
+
+  @UI.hidden: true
+  CreatedAt;
+
+  @UI.hidden: true
+  LastChangedBy;
+
+  @UI.hidden: true
+  LastChangedAt;
+
+  @UI.hidden: true
+  LocalLastChangedAt;
+}

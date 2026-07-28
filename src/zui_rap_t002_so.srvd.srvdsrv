@@ -1,0 +1,6 @@
+@EndUserText.label: 'Sales Order Addon Service'
+define service ZUI_RAP_T002_SO {
+  expose ZC_RAP_T002_SO as SalesOrderItem;
+  expose ZI_RAP_T002_SO_VH as SalesOrderVH;
+  expose ZI_RAP_T002_ITEM_VH as SalesOrderItemVH;
+}

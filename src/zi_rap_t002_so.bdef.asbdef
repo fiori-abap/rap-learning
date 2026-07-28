@@ -1,0 +1,31 @@
+unmanaged implementation in class zbp_i_rap_t002_so unique;
+strict;
+
+define behavior for ZI_RAP_T002_SO alias SalesOrderItem
+lock master
+authorization master ( global )
+{
+  update;
+
+  field ( readonly )
+    SalesOrder,
+    SalesOrderItem,
+    SalesOrderType,
+    SalesOrderDate,
+    SalesOrganization,
+    DistributionChannel,
+    Division,
+    SoldToParty,
+    Material,
+    MaterialDescription,
+    Plant,
+    OrderQuantity,
+    SalesUnit,
+    NetAmount,
+    TransactionCurrency,
+    CreatedBy,
+    CreatedAt,
+    LastChangedBy,
+    LastChangedAt,
+    LocalLastChangedAt;
+}
