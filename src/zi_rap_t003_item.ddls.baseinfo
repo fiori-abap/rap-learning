@@ -1,0 +1,11 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "VBAP",
+      "ZRAP_T003_ADDON"
+    ],
+    "ASSOCIATED": [
+      "ZI_RAP_T003_HEADER"
+    ]
+  }
+}

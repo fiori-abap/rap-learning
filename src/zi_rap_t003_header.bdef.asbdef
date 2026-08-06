@@ -1,0 +1,37 @@
+unmanaged implementation in class zbp_i_rap_t003_header unique;
+
+define behavior for ZI_RAP_T003_HEADER alias SalesOrderHeader
+{
+  update;
+
+  field ( readonly )
+    SalesOrder,
+    SalesOrderType,
+    CreatedOn,
+    SalesOrganization,
+    DistributionChannel,
+    Division,
+    SoldToParty,
+    NetValue,
+    TransactionCurrency;
+
+  association _Items;
+}
+
+define behavior for ZI_RAP_T003_ITEM alias SalesOrderItem
+{
+  update;
+
+  field ( readonly )
+    SalesOrder,
+    SalesOrderItem,
+    Material,
+    MaterialDescription,
+    Plant,
+    StorageLocation,
+    OrderQuantity,
+    SalesUnit,
+    LocalLastChangedAt;
+
+  association _Header;
+}

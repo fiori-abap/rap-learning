@@ -1,0 +1,6 @@
+@EndUserText.label: '销售订单明细附加维护服务'
+define service ZUI_RAP_T003 {
+  expose ZC_RAP_T003_HEADER as SalesOrderHeader;
+  expose ZC_RAP_T003_ITEM as SalesOrderItem;
+  expose ZI_RAP_T002_SO_VH as SalesOrderValueHelp;
+}

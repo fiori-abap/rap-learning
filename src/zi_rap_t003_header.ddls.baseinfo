@@ -1,0 +1,10 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "VBAK"
+    ],
+    "ASSOCIATED": [
+      "ZI_RAP_T003_ITEM"
+    ]
+  }
+}

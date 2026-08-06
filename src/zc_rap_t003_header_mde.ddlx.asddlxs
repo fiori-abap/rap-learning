@@ -1,0 +1,179 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo: {
+  typeName       : '销售订单',
+  typeNamePlural : '销售订单',
+  title          : {
+    type  : #STANDARD,
+    value : 'SalesOrder'
+  }
+}
+
+annotate view ZC_RAP_T003_HEADER with
+{
+  @UI.facet: [
+    {
+      id      : 'HeaderGeneral',
+      purpose : #STANDARD,
+      type    : #IDENTIFICATION_REFERENCE,
+      label   : '基本信息',
+      position: 10
+    },
+    {
+      id           : 'SalesOrderItems',
+      purpose      : #STANDARD,
+      type         : #LINEITEM_REFERENCE,
+      label        : '销售订单明细',
+      position     : 20,
+      targetElement: '_Items'
+    }
+  ]
+
+  @UI.lineItem: [
+    {
+      position  : 10,
+      importance: #HIGH,
+      label     : '销售订单'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 10,
+      label   : '销售订单'
+    }
+  ]
+  @UI.selectionField: [
+    {
+      position: 10
+    }
+  ]
+  SalesOrder;
+
+
+  @UI.lineItem: [
+    {
+      position  : 20,
+      importance: #HIGH,
+      label     : '订单类型'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 20,
+      label   : '订单类型'
+    }
+  ]
+  SalesOrderType;
+
+
+  @UI.lineItem: [
+    {
+      position: 30,
+      label   : '创建日期'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 30,
+      label   : '创建日期'
+    }
+  ]
+  CreatedOn;
+
+
+  @UI.lineItem: [
+    {
+      position: 40,
+      label   : '销售组织'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 40,
+      label   : '销售组织'
+    }
+  ]
+  @UI.selectionField: [
+    {
+      position: 20
+    }
+  ]
+  SalesOrganization;
+  @UI.lineItem: [
+    {
+      position: 80,
+      label   : '分销渠道'
+    }
+  ]
+
+  @UI.identification: [
+    {
+      position: 50,
+      label   : '分销渠道'
+    }
+  ]
+  DistributionChannel;
+  @UI.lineItem: [
+    {
+      position: 70,
+      label   : '产品组'
+    }
+  ]
+
+  @UI.identification: [
+    {
+      position: 60,
+      label   : '产品组'
+    }
+  ]
+  Division;
+
+
+  @UI.lineItem: [
+    {
+      position: 50,
+      label   : '售达方'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 70,
+      label   : '售达方'
+    }
+  ]
+  @UI.selectionField: [
+    {
+      position: 30
+    }
+  ]
+  SoldToParty;
+
+
+  @UI.lineItem: [
+    {
+      position: 60,
+      label   : '净额'
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 80,
+      label   : '净额'
+    }
+  ]
+  NetValue;
+  @UI.lineItem: [
+    {
+      position: 90,
+      label   : '订单货币'
+    }
+  ]
+
+  @UI.identification: [
+    {
+      position: 90,
+      label   : '货币'
+    }
+  ]
+  TransactionCurrency;
+}

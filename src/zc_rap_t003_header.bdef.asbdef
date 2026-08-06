@@ -1,0 +1,15 @@
+projection;
+
+define behavior for ZC_RAP_T003_HEADER alias SalesOrderHeader
+{
+  use update;
+
+  use association _Items;
+}
+
+define behavior for ZC_RAP_T003_ITEM alias SalesOrderItem
+{
+  use update;
+
+  use association _Header;
+}
