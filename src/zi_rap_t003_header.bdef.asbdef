@@ -1,6 +1,7 @@
 unmanaged implementation in class zbp_i_rap_t003_header unique;
 
 define behavior for ZI_RAP_T003_HEADER alias SalesOrderHeader
+authorization master ( global )
 {
   update;
 
@@ -19,6 +20,7 @@ define behavior for ZI_RAP_T003_HEADER alias SalesOrderHeader
 }
 
 define behavior for ZI_RAP_T003_ITEM alias SalesOrderItem
+authorization dependent by _Header
 {
   update;
 

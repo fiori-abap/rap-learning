@@ -28,6 +28,8 @@ CLASS lhc_SalesOrderHeader DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS rba_Items FOR READ
       IMPORTING keys_rba FOR READ SalesOrderHeader\_Items FULL result_requested RESULT result LINK association_links.
+    METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+      IMPORTING REQUEST requested_authorizations FOR SalesOrderHeader RESULT result.
 
 ENDCLASS.
 
@@ -40,6 +42,33 @@ CLASS lhc_SalesOrderHeader IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD rba_Items.
+  ENDMETHOD.
+
+  METHOD get_global_authorizations.
+    IF requested_authorizations-%update
+       = if_abap_behv=>mk-on.
+
+      result-%update =
+        if_abap_behv=>auth-unauthorized.
+
+    ENDIF.
+
+
+*    IF requested_authorizations-%update
+*       = if_abap_behv=>mk-on.
+*
+*      AUTHORITY-CHECK OBJECT 'V_VBAK_VKO'
+*        ID 'ACTVT' FIELD '02'.
+*
+*      IF sy-subrc = 0.
+*        result-%update =
+*          if_abap_behv=>auth-allowed.
+*      ELSE.
+*        result-%update =
+*          if_abap_behv=>auth-unauthorized.
+*      ENDIF.
+*
+*    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.
@@ -97,6 +126,16 @@ CLASS lhc_SalesOrderItem IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD rba_Header.
+    LOOP AT keys_rba ASSIGNING FIELD-SYMBOL(<ls_item>).
+
+      INSERT VALUE #(
+        source-%tky = <ls_item>-%tky
+        target-%tky = VALUE #(
+          SalesOrder = <ls_item>-SalesOrder
+        )
+      ) INTO TABLE association_links.
+
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.
@@ -122,6 +161,46 @@ CLASS lsc_ZI_RAP_T003_HEADER IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD check_before_save.
+    "没有前台修改数据，不检查
+    IF lcl_buffer=>gt_item IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    "直接在DB层判断：
+    "是否存在 销售订单 + 明细 + 备注 全部相同的数据
+    SELECT sales_order,
+           sales_order_item
+      FROM zrap_t003_addon
+      FOR ALL ENTRIES IN @lcl_buffer=>gt_item
+      WHERE sales_order      = @lcl_buffer=>gt_item-sales_order
+        AND sales_order_item = @lcl_buffer=>gt_item-sales_order_item
+        AND item_note        = @lcl_buffer=>gt_item-item_note
+      INTO TABLE @DATA(lt_same).
+
+    "只要有一条完全相同，本次保存全部停止
+    IF lt_same IS NOT INITIAL.
+
+      DATA(ls_same) = lt_same[ 1 ].
+
+      APPEND VALUE #(
+        SalesOrder     = ls_same-sales_order
+        SalesOrderItem = ls_same-sales_order_item
+        %fail = VALUE #(
+          cause = if_abap_behv=>cause-unspecific
+        )
+      ) TO failed-SalesOrderItem.
+
+      APPEND VALUE #(
+        SalesOrder     = ls_same-sales_order
+        SalesOrderItem = ls_same-sales_order_item
+        %msg = new_message_with_text(
+          severity = if_abap_behv_message=>severity-error
+          text     = '存在与数据库相同的数据，本次未执行保存'
+        )
+      ) TO reported-SalesOrderItem.
+
+    ENDIF.
+
   ENDMETHOD.
 
   METHOD save.

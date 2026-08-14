@@ -1,0 +1,4 @@
+@EndUserText.label: '销售订单出荷查询服务'
+define service ZUI_RAP_T004 {
+  expose ZCE_RAP_T004 as SalesOrderDelivery;
+}

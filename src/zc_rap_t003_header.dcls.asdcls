@@ -1,0 +1,9 @@
+@EndUserText.label: '销售订单权限控制'
+@MappingRole: true
+
+define role ZC_RAP_T003_HEADER
+{
+    grant select on ZC_RAP_T003_HEADER
+        where inheriting conditions
+            from entity ZI_RAP_T003_HEADER;
+}

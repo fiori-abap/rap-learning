@@ -1,0 +1,46 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo: {
+  typeName: '商品',
+  typeNamePlural: '商品',
+  title: {
+    type: #STANDARD,
+    value: 'Name'
+  }
+}
+
+annotate entity ZC_RAP_T005 with
+{
+  @UI.facet: [
+    {
+      id      : 'GeneralInfo',
+      purpose : #STANDARD,
+      type    : #IDENTIFICATION_REFERENCE,
+      label   : '商品信息',
+      position: 10
+    }
+  ]
+
+  @UI.selectionField: [{ position: 10 }]
+  @UI.lineItem:       [{ position: 10, label: '商品ID' }]
+  @UI.identification: [{ position: 10, label: '商品ID' }]
+  ID;
+
+  @UI.selectionField: [{ position: 20 }]
+  @UI.lineItem:       [{ position: 20, label: '商品名称' }]
+  @UI.identification: [{ position: 20, label: '商品名称' }]
+  Name;
+
+  @UI.lineItem:       [{ position: 30, label: '商品说明' }]
+  @UI.identification: [{ position: 30, label: '商品说明' }]
+  Description;
+
+  @UI.lineItem:       [{ position: 40, label: '金额' }]
+  @UI.identification: [{ position: 40, label: '金额' }]
+  Amount;
+
+  @UI.selectionField: [{ position: 30 }]
+  @UI.lineItem:       [{ position: 50, label: '状态' }]
+  @UI.identification: [{ position: 50, label: '状态' }]
+  Status;
+}

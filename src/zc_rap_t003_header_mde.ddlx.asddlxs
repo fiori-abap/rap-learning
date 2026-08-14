@@ -26,6 +26,7 @@ annotate view ZC_RAP_T003_HEADER with
       label        : '销售订单明细',
       position     : 20,
       targetElement: '_Items'
+ 
     }
   ]
 

@@ -1,0 +1,31 @@
+managed implementation in class zbp_i_rap_t005 unique;
+with draft;
+
+define behavior for ZI_RAP_T005
+persistent table zrap_t005
+draft table zrap_t005_d
+lock master
+total etag LastChangedAt
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  draft action Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for zrap_t005
+  {
+    ID = id;
+    Name = name;
+    Description = description;
+    Amount = amount;
+    Status = status;
+    LocalLastChangedAt = local_last_changed_at;
+    LastChangedAt = last_changed_at;
+  }
+}

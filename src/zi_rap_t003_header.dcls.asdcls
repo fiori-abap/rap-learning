@@ -1,0 +1,14 @@
+@EndUserText.label: '销售订单权限控制'
+@MappingRole: true
+
+define role ZI_RAP_T003_HEADER
+{
+    grant select on ZI_RAP_T003_HEADER
+        where
+            ( SalesOrganization )
+            = aspect pfcg_auth(
+                V_VBAK_VKO,
+                VKORG,
+                ACTVT = '03'
+              );
+}
