@@ -1,4 +1,5 @@
 @EndUserText.label: 'Managed RAP 商品维护服务'
 define service ZUI_RAP_T005 {
   expose ZC_RAP_T005 as Product;
+  expose ZI_RAP_T005_STATUS_VH as StatusValueHelp;
 }

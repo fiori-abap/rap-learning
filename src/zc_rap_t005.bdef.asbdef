@@ -12,4 +12,6 @@ define behavior for ZC_RAP_T005
   use action Discard;
   use action Resume;
   use action Prepare;
+
+  use action CloseProduct;
 }

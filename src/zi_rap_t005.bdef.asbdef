@@ -12,6 +12,23 @@ etag master LocalLastChangedAt
   update;
   delete;
 
+  field ( mandatory : create, readonly : update ) ID;
+  field ( mandatory ) Name, Status;
+  field ( features : instance ) Amount;
+
+  validation validateAmount on save { create; update; field Amount; }
+
+  validation validateMandatoryFields on save
+  {
+    create;
+    update;
+    field Name, Status;
+  }
+
+  determination setInitialStatus on modify { create; }
+
+  action ( features : instance ) CloseProduct result [1] $self;
+
   draft action Edit;
   draft action Activate;
   draft action Discard;

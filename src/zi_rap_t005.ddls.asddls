@@ -8,6 +8,14 @@ define root view entity ZI_RAP_T005
       name                  as Name,
       description           as Description,
       amount                as Amount,
+      @Consumption.valueHelpDefinition: [
+      {
+      entity: {
+      name   : 'ZI_RAP_T005_STATUS_VH',
+      element: 'Status'
+      }
+      }
+      ]
       status                as Status,
 
       @Semantics.systemDateTime.localInstanceLastChangedAt: true

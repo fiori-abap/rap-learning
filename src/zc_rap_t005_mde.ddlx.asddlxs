@@ -23,7 +23,15 @@ annotate entity ZC_RAP_T005 with
 
   @UI.selectionField: [{ position: 10 }]
   @UI.lineItem:       [{ position: 10, label: '商品ID' }]
-  @UI.identification: [{ position: 10, label: '商品ID' }]
+  @UI.identification: [
+    { position: 10, label: '商品ID' },
+    {
+      position   : 60,
+      type       : #FOR_ACTION,
+      dataAction : 'CloseProduct',
+      label      : '关闭商品'
+    }
+  ]
   ID;
 
   @UI.selectionField: [{ position: 20 }]

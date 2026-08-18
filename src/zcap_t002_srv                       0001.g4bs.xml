@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_G4BS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <_-IWBEP_-I_V4_MSRT>
+    <_-IWBEP_-I_V4_MSRT>
+     <SERVICE_ID>ZCAP_T002_SRV</SERVICE_ID>
+     <SERVICE_VERSION>0001</SERVICE_VERSION>
+     <LANGUAGE>J</LANGUAGE>
+     <DESCRIPTION>CAP Sales Order V4 Practice</DESCRIPTION>
+    </_-IWBEP_-I_V4_MSRT>
+   </_-IWBEP_-I_V4_MSRT>
+   <_-IWBEP_-I_V4_MSRV>
+    <_-IWBEP_-I_V4_MSRV>
+     <SERVICE_ID>ZCAP_T002_SRV</SERVICE_ID>
+     <SERVICE_VERSION>0001</SERVICE_VERSION>
+     <MPC_NAME>ZCL_ZCAP_T002_MPC_EXT</MPC_NAME>
+     <DPC_NAME>ZCL_ZCAP_T002_DPC_EXT</DPC_NAME>
+     <IS_SAP_SERVICE>-</IS_SAP_SERVICE>
+    </_-IWBEP_-I_V4_MSRV>
+   </_-IWBEP_-I_V4_MSRV>
+  </asx:values>
+ </asx:abap>
+</abapGit>
