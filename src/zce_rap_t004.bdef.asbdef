@@ -1,0 +1,23 @@
+unmanaged implementation in class zbp_ce_rap_t004 unique;
+
+define behavior for ZCE_RAP_T004 //alias <alias_name>
+
+{
+  update;
+
+  field ( readonly )
+  SalesOrder,
+  SalesOrderItem,
+  SalesOrganization,
+  SalesOrderDate,
+  SoldToParty,
+  CustomerName,
+  Material,
+  SalesUnit,
+  OrderQuantity,
+  ScheduleLineDate,
+  DeliveryDocument,
+  ActualGoodsMovementDate,
+  DeliveryStatus;
+
+}

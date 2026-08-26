@@ -35,28 +35,48 @@ CLASS lhc_zi_rap_t005 IMPLEMENTATION.
   METHOD validateAmount.
 
     READ ENTITIES OF zi_rap_t005 IN LOCAL MODE
-    ENTITY zi_rap_t005
-      FIELDS ( Amount )
-      WITH CORRESPONDING #( keys )
-    RESULT DATA(lt_product).
+      ENTITY zi_rap_t005
+        FIELDS ( Amount )
+        WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_product).
+
+    DATA ls_failed
+      LIKE LINE OF failed-zi_rap_t005.
+
+    DATA ls_reported
+      LIKE LINE OF reported-zi_rap_t005.
 
     LOOP AT lt_product INTO DATA(ls_product)
          WHERE Amount < 0.
 
-      APPEND VALUE #(
-        %tky = ls_product-%tky
-      ) TO failed-zi_rap_t005.
+      "-----------------------------
+      " 保存失败对象
+      "-----------------------------
+      CLEAR ls_failed.
 
-      APPEND VALUE #(
-        %tky = ls_product-%tky
+      ls_failed-%tky = ls_product-%tky.
 
-        %msg = new_message_with_text(
-          severity = if_abap_behv_message=>severity-error
-          text     = '金额不能小于0'
-        )
+      APPEND ls_failed
+        TO failed-zi_rap_t005.
 
-        %element-Amount = if_abap_behv=>mk-on
-      ) TO reported-zi_rap_t005.
+
+      "-----------------------------
+      " 前台错误信息
+      "-----------------------------
+      CLEAR ls_reported.
+
+      ls_reported-%tky = ls_product-%tky.
+
+      ls_reported-%msg = new_message_with_text(
+        severity = if_abap_behv_message=>severity-error
+        text     = '金额不能小于0'
+      ).
+
+      ls_reported-%element-Amount =
+        if_abap_behv=>mk-on.
+
+      APPEND ls_reported
+        TO reported-zi_rap_t005.
 
     ENDLOOP.
   ENDMETHOD.

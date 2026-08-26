@@ -6,6 +6,15 @@ CLASS zcl_rap_t004_query DEFINITION
   PUBLIC SECTION.
     INTERFACES if_rap_query_provider.
 
+    METHODS update_comment
+      IMPORTING
+        iv_sales_order      TYPE zrap_t004_d-sales_order
+        iv_sales_order_item TYPE zrap_t004_d-sales_order_item
+        iv_comment_text     TYPE zrap_t004_d-comment_text
+      EXPORTING
+        ev_success          TYPE abap_bool
+        ev_message          TYPE string.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
     TYPES ty_t_sales_order TYPE STANDARD TABLE OF zce_rap_t004 WITH EMPTY KEY.
@@ -153,12 +162,17 @@ CLASS zcl_rap_t004_query IMPLEMENTATION.
       c~name1  AS CustomerName,
       b~matnr  AS Material,
       b~kwmeng AS OrderQuantity,
-      b~vrkme  AS SalesUnit
+      b~vrkme  AS SalesUnit,
+      z~process_status AS ProcessStatus,
+      z~comment_text   AS CommentText
       FROM vbak AS a
       INNER JOIN vbap AS b
         ON b~vbeln = a~vbeln
       LEFT OUTER JOIN kna1 AS c
         ON c~kunnr = a~kunnr
+      LEFT OUTER JOIN zrap_t004_d AS z
+      ON  z~sales_order      = a~vbeln
+      AND z~sales_order_item = b~posnr
       WHERE a~vbeln IN @lr_sales_order
         AND a~vkorg IN @lr_sales_org
         AND a~kunnr IN @lr_customer
@@ -267,6 +281,47 @@ CLASS zcl_rap_t004_query IMPLEMENTATION.
         ENDIF.
 
       ENDLOOP.
+
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD update_comment.
+    DATA ls_db TYPE zrap_t004_d.
+
+    CLEAR:
+      ev_success,
+      ev_message.
+
+    "先更新已有数据
+    UPDATE zrap_t004_d
+      SET comment_text = iv_comment_text
+      WHERE sales_order      = iv_sales_order
+        AND sales_order_item = iv_sales_order_item.
+
+    IF sy-subrc = 0.
+
+      ev_success = abap_true.
+      ev_message = '备注更新成功'.
+
+    ELSE.
+
+      "没有记录时新建
+      CLEAR ls_db.
+
+      ls_db-client           = sy-mandt.
+      ls_db-sales_order      = iv_sales_order.
+      ls_db-sales_order_item = iv_sales_order_item.
+      ls_db-comment_text     = iv_comment_text.
+
+      INSERT zrap_t004_d FROM ls_db.
+
+      IF sy-subrc = 0.
+        ev_success = abap_true.
+        ev_message = '备注新增成功'.
+      ELSE.
+        ev_success = abap_false.
+        ev_message = '备注更新失败'.
+      ENDIF.
 
     ENDIF.
   ENDMETHOD.
