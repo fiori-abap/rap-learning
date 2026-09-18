@@ -1,0 +1,5 @@
+@EndUserText.label: 'IF006 External Data Service'
+define service ZUI_RAP_IF006 {
+  expose ZC_RAP_IF006 as ExternalData;
+  expose ZCE_IF006_PREVIEW as ExternalPreview;
+}

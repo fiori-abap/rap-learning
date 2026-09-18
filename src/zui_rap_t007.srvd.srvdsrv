@@ -1,0 +1,5 @@
+@EndUserText.label: 'T007 Unified Document Service'
+define service ZUI_RAP_T007 {
+  expose ZC_RAP_T007_DOC as UnifiedDocument;
+  expose ZI_RAP_T007_PARTNER_VH as PartnerValueHelp;
+}

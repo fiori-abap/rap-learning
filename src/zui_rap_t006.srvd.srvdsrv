@@ -1,0 +1,6 @@
+@EndUserText.label: 'T006 Processing Batch Service'
+define service ZUI_RAP_T006 {
+  expose ZC_RAP_T006_H as ProcessingBatch;
+  expose ZC_RAP_T006_I as ProcessingItem;
+  expose ZI_RAP_T006_SOURCE as DocumentSource;
+}

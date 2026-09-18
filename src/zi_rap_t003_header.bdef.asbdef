@@ -16,6 +16,8 @@ authorization master ( global )
     NetValue,
     TransactionCurrency;
 
+  action SendToExternal;
+
   association _Items;
 }
 

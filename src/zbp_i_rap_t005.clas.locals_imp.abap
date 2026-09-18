@@ -124,6 +124,13 @@ CLASS lhc_zi_rap_t005 IMPLEMENTATION.
       (
         %tky = ls_product-%tky
 
+        %features-%delete =
+          COND #(
+            WHEN ls_product-Status = 'CLOSED'
+            THEN if_abap_behv=>fc-o-disabled
+            ELSE if_abap_behv=>fc-o-enabled
+          )
+
         %field-Amount =
           COND #(
             WHEN ls_product-Status = 'CLOSED'

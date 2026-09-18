@@ -51,6 +51,12 @@ CLASS lhc_ZCE_RAP_T004 IMPLEMENTATION.
 
         APPEND ls_update TO lcl_buffer=>gt_update.
 
+        APPEND new_message_with_text(
+          severity = if_abap_behv_message=>severity-success
+          text     = '处理状态更新成功'
+        ) TO reported-%other.
+
+
       ENDIF.
 
       IF ls_entity-%control-CommentText = if_abap_behv=>mk-on.
@@ -78,6 +84,16 @@ CLASS lhc_ZCE_RAP_T004 IMPLEMENTATION.
             text     = lv_message
           ) TO reported-%other.
 
+        ELSE.
+
+*          APPEND VALUE #(
+*            %tky = ls_entity-%tky
+*          ) TO failed-zce_rap_t004.
+
+          APPEND new_message_with_text(
+            severity = if_abap_behv_message=>severity-error
+            text     = lv_message
+          ) TO reported-%other.
 
         ENDIF.
 
@@ -140,6 +156,11 @@ CLASS lsc_ZCE_RAP_T004 IMPLEMENTATION.
         INSERT zrap_t004_d FROM ls_db.
 
       ENDIF.
+
+*      APPEND new_message_with_text(
+*          severity = if_abap_behv_message=>severity-success
+*          text     = '处理状态更新成功'
+*        ) TO reported-%other.
 
     ENDLOOP.
   ENDMETHOD.

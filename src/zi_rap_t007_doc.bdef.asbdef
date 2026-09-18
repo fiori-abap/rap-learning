@@ -1,0 +1,39 @@
+unmanaged implementation in class zbp_i_rap_t007_doc unique;
+strict;
+with draft;
+
+define behavior for ZI_RAP_T007_DOC alias Document
+draft table zrap_t007_d
+lock master
+total etag LocalLastChangedAt
+authorization master ( instance )
+{
+  update;
+
+  field ( readonly )
+    SourceType,
+    DocumentNo,
+    DocumentType,
+    DocumentDate,
+    SalesOrganization,
+    Customer,
+    CustomerName,
+    CreatedDate,
+    CreatedBy,
+    DistributionChannel,
+    Division,
+    ShippingPoint,
+    PlannedDate,
+    SourceDescription,
+    AddonCreatedBy,
+    AddonCreatedAt,
+    AddonLastChangedBy,
+    AddonLastChangedAt,
+    LocalLastChangedAt;
+
+  draft action Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+}

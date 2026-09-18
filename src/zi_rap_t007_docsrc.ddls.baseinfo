@@ -1,0 +1,10 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZI_RAP_T007_DLREF",
+      "KNA1",
+      "LIKP",
+      "VBAK"
+    ]
+  }
+}

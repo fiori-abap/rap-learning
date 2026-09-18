@@ -1,0 +1,10 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "LIKP",
+      "LIPS",
+      "VBAK",
+      "VBAP"
+    ]
+  }
+}

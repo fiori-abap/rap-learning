@@ -30,7 +30,9 @@ ENDCLASS.
 
 
 
-CLASS zcl_rap_t004_query IMPLEMENTATION.
+CLASS ZCL_RAP_T004_QUERY IMPLEMENTATION.
+
+
   METHOD if_rap_query_provider~select.
     DATA(lv_top)  = io_request->get_paging( )->get_page_size( ).
     DATA(lv_skip) = io_request->get_paging( )->get_offset( ).
@@ -285,6 +287,7 @@ CLASS zcl_rap_t004_query IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
+
   METHOD update_comment.
     DATA ls_db TYPE zrap_t004_d.
 
@@ -325,5 +328,4 @@ CLASS zcl_rap_t004_query IMPLEMENTATION.
 
     ENDIF.
   ENDMETHOD.
-
 ENDCLASS.

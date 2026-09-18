@@ -1,0 +1,211 @@
+@Metadata.layer: #CORE
+@UI.headerInfo: {
+  typeName: '单据',
+  typeNamePlural: '受注・出荷单据',
+  title: {
+    type: #STANDARD,
+    value: 'DocumentNo'
+  },
+  description: {
+    value: 'SourceDescription'
+  }
+}
+@UI.presentationVariant: [
+  {
+    sortOrder: [
+      {
+        by: 'RelationSort',
+        direction: #ASC
+      },
+      {
+        by: 'SalesOrderNo',
+        direction: #ASC
+      },
+      {
+        by: 'SourceSort',
+        direction: #ASC
+      },
+      {
+        by: 'DocumentNo',
+        direction: #ASC
+      }
+    ],
+    visualizations: [
+      {
+        type: #AS_LINEITEM
+      }
+    ]
+  }
+]
+
+annotate entity ZC_RAP_T007_DOC with
+{
+
+  @UI.facet: [
+    {
+      id: 'DocumentInfo',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: '单据信息',
+      position: 10
+    },
+    {
+      id: 'AddressInfo',
+      purpose: #STANDARD,
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'Address',
+      label: '地址维护',
+      position: 20
+    }
+  ]
+
+  @UI.selectionField: [{ position: 10 }]
+  @UI.lineItem:       [{ position: 10, label: '来源类型' }]
+  @UI.identification: [{ position: 10, label: '来源类型' }]
+  SourceType;
+  
+  @UI.selectionField: [{ position: 15 }]
+  @UI.lineItem:       [{ position: 15, label: '关联受注番号' }]
+  SalesOrderNo;
+  
+  @UI.selectionField: [{ position: 20 }]
+  @UI.lineItem:       [{ position: 20, label: '单据编号' }]
+  @UI.identification: [{ position: 20, label: '单据编号' }]
+  DocumentNo;
+
+  @UI.selectionField: [{ position: 30 }]
+  @UI.lineItem:       [{ position: 30, label: '单据类型' }]
+  @UI.identification: [{ position: 30, label: '单据类型' }]
+  DocumentType;
+
+  @UI.selectionField: [{ position: 40 }]
+  @UI.lineItem:       [{ position: 40, label: '单据日期' }]
+  @UI.identification: [{ position: 40, label: '单据日期' }]
+  DocumentDate;
+
+  @UI.selectionField: [{ position: 50 }]
+  @UI.lineItem:       [{ position: 50, label: '销售组织' }]
+  @UI.identification: [{ position: 50, label: '销售组织' }]
+  SalesOrganization;
+
+  @UI.lineItem:       [{ position: 60, label: '客户' }]
+  @UI.identification: [{ position: 60, label: '客户' }]
+  Customer;
+
+  @UI.lineItem:       [{ position: 70, label: '客户名称' }]
+  @UI.identification: [{ position: 70, label: '客户名称' }]
+  CustomerName;
+
+  @UI.lineItem:       [{ position: 80, label: '流通渠道' }]
+  @UI.identification: [{ position: 80, label: '流通渠道' }]
+  DistributionChannel;
+
+  @UI.lineItem:       [{ position: 90, label: '产品组' }]
+  @UI.identification: [{ position: 90, label: '产品组' }]
+  Division;
+
+  @UI.lineItem:       [{ position: 100, label: '出荷地点' }]
+  @UI.identification: [{ position: 100, label: '出荷地点' }]
+  ShippingPoint;
+
+  @UI.lineItem:       [{ position: 110, label: '计划日期' }]
+  @UI.identification: [{ position: 110, label: '计划日期' }]
+  PlannedDate;
+
+  @UI.lineItem:       [{ position: 120, label: '创建者' }]
+  CreatedBy;
+
+  @UI.lineItem:       [{ position: 130, label: '来源说明' }]
+  SourceDescription;
+
+
+  @UI.fieldGroup: [
+    {
+      qualifier: 'Address',
+      position: 10,
+      label: 'Partner'
+    }
+  ]
+  PartnerNo;
+
+  @UI.fieldGroup: [
+    {
+      qualifier: 'Address',
+      position: 20,
+      label: 'Partner名称'
+    }
+  ]
+  PartnerName;
+
+  @UI.fieldGroup: [
+    {
+      qualifier: 'Address',
+      position: 30,
+      label: '地址编号'
+    }
+  ]
+  AddressNumber;
+
+  @UI.fieldGroup: [
+    {
+      qualifier: 'Address',
+      position: 40,
+      label: '邮编'
+    }
+  ]
+  PostalCode;
+
+  @UI.fieldGroup: [
+    {
+      qualifier: 'Address',
+      position: 50,
+      label: '都道府县'
+    }
+  ]
+  Region;
+
+  @UI.fieldGroup: [
+    {
+      qualifier: 'Address',
+      position: 60,
+      label: '城市'
+    }
+  ]
+  City;
+
+  @UI.fieldGroup: [
+    {
+      qualifier: 'Address',
+      position: 70,
+      label: '街道'
+    }
+  ]
+  Street;
+
+  @UI.fieldGroup: [
+    {
+      qualifier: 'Address',
+      position: 80,
+      label: '门牌号'
+    }
+  ]
+  HouseNumber;
+
+  @UI.fieldGroup: [
+    {
+      qualifier: 'Address',
+      position: 90,
+      label: '国家'
+    }
+  ]
+  Country;
+
+  @UI.fieldGroup: [
+    {
+      qualifier: 'Address',
+      position: 100,
+      label: '备注'
+    }
+  ]
+  CommentText;
+}

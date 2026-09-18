@@ -30,6 +30,8 @@ CLASS lhc_SalesOrderHeader DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys_rba FOR READ SalesOrderHeader\_Items FULL result_requested RESULT result LINK association_links.
     METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
       IMPORTING REQUEST requested_authorizations FOR SalesOrderHeader RESULT result.
+    METHODS SendToExternal FOR MODIFY
+      IMPORTING keys FOR ACTION SalesOrderHeader~SendToExternal.
 
 ENDCLASS.
 
@@ -45,13 +47,13 @@ CLASS lhc_SalesOrderHeader IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_global_authorizations.
-    IF requested_authorizations-%update
-       = if_abap_behv=>mk-on.
-
-      result-%update =
-        if_abap_behv=>auth-unauthorized.
-
-    ENDIF.
+*    IF requested_authorizations-%update
+*       = if_abap_behv=>mk-on.
+*
+*      result-%update =
+*        if_abap_behv=>auth-unauthorized.
+*
+*    ENDIF.
 
 
 *    IF requested_authorizations-%update
@@ -69,6 +71,74 @@ CLASS lhc_SalesOrderHeader IMPLEMENTATION.
 *      ENDIF.
 *
 *    ENDIF.
+  ENDMETHOD.
+
+  METHOD SendToExternal.
+    DATA lt_sales_order
+    TYPE zcl_if005_http_test=>ty_sales_order_range.
+
+    LOOP AT keys ASSIGNING FIELD-SYMBOL(<key>).
+
+      APPEND VALUE #(
+        sign   = 'I'
+        option = 'EQ'
+        low    = <key>-%tky-SalesOrder
+      ) TO lt_sales_order.
+
+    ENDLOOP.
+
+    IF lt_sales_order IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    DATA(ls_result) =
+      zcl_if005_http_test=>send_orders(
+        it_sales_order = lt_sales_order
+      ).
+
+    IF ls_result-status_code >= 200
+       AND ls_result-status_code < 300.
+
+      APPEND VALUE #(
+        %msg = new_message_with_text(
+          severity = if_abap_behv_message=>severity-success
+          text     = '外部系统への送信が完了しました。'
+        )
+      ) TO reported-salesorderheader.
+
+    ELSE.
+
+      DATA lt_error_text TYPE STANDARD TABLE OF string WITH EMPTY KEY.
+
+      IF ls_result-response IS NOT INITIAL.
+
+        SPLIT ls_result-response
+          AT ' | '
+          INTO TABLE lt_error_text.
+
+        LOOP AT lt_error_text ASSIGNING FIELD-SYMBOL(<error_text>).
+
+          APPEND VALUE #(
+            %msg = new_message_with_text(
+              severity = if_abap_behv_message=>severity-error
+              text     = <error_text>
+            )
+          ) TO reported-salesorderheader.
+
+        ENDLOOP.
+
+      ELSE.
+
+        APPEND VALUE #(
+          %msg = new_message_with_text(
+            severity = if_abap_behv_message=>severity-error
+            text     = |HTTP Status: { ls_result-status_code }|
+          )
+        ) TO reported-salesorderheader.
+
+      ENDIF.
+
+    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.

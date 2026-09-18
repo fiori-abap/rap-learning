@@ -1,0 +1,34 @@
+managed implementation in class zbp_i_rap_if006 unique;
+
+define behavior for ZI_RAP_IF006 alias ExternalData
+persistent table zrap_if006
+lock master
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly )
+    CreatedBy,
+    CreatedAt,
+    LastChangedBy,
+    LastChangedAt,
+    LocalLastChangedAt;
+
+  mapping for zrap_if006
+  {
+    ExternalOrderNo     = external_order_no;
+    ExternalItemNo      = external_item_no;
+    Material            = material;
+    Amount              = amount;
+    Currency            = currency;
+    Status              = status;
+    SourceSystem        = source_system;
+    CreatedBy           = created_by;
+    CreatedAt           = created_at;
+    LastChangedBy       = last_changed_by;
+    LastChangedAt       = last_changed_at;
+    LocalLastChangedAt  = local_last_changed_at;
+  }
+}

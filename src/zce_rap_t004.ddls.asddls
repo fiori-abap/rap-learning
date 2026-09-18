@@ -2,24 +2,13 @@
 @ObjectModel.query.implementedBy: 'ABAP:ZCL_RAP_T004_QUERY'
 define root custom entity ZCE_RAP_T004
 {
-      @UI.facet               : [
-        {
-          id                  : 'General',
-          type                : #IDENTIFICATION_REFERENCE,
-          label               : '基本信息',
-          position            : 10
-        }
-      ]
-
       @EndUserText.label      : '销售订单'
       @UI.selectionField      : [{ position: 10 }]
       @UI.lineItem            : [{ position: 10 }]
-      @UI.identification      : [{ position: 10 }]
   key SalesOrder              : vbeln_va;
 
       @EndUserText.label      : '销售订单明细'
       @UI.lineItem            : [{ position: 20 }]
-      @UI.identification      : [{ position: 20 }]
   key SalesOrderItem          : posnr_va;
 
       @EndUserText.label      : '销售组织'
@@ -74,12 +63,10 @@ define root custom entity ZCE_RAP_T004
 
       @EndUserText.label      : '处理状态'
       @UI.lineItem            : [{ position: 140 }]
-      @UI.identification      : [{ position: 30 }]
       ProcessStatus           : abap.char(10);
 
       @EndUserText.label      : '备注'
       @UI.lineItem            : [{ position: 150 }]
-      @UI.identification      : [{ position: 40 }]
       CommentText             : abap.char(100);
 
 }

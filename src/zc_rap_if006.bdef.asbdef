@@ -1,0 +1,8 @@
+projection;
+
+define behavior for ZC_RAP_IF006 alias ExternalData
+{
+  use create;
+  use update;
+  use delete;
+}

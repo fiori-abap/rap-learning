@@ -1,0 +1,10 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZRAP_T006_I"
+    ],
+    "ASSOCIATED": [
+      "ZI_RAP_T006_H"
+    ]
+  }
+}

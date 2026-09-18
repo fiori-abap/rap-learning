@@ -26,7 +26,7 @@ annotate view ZC_RAP_T003_HEADER with
       label        : '销售订单明细',
       position     : 20,
       targetElement: '_Items'
- 
+
     }
   ]
 
@@ -35,6 +35,13 @@ annotate view ZC_RAP_T003_HEADER with
       position  : 10,
       importance: #HIGH,
       label     : '销售订单'
+    },
+    {
+    type      : #FOR_ACTION,
+    dataAction: 'SendToExternal',
+    label     : '外部系统发送',
+    position  : 1,
+    invocationGrouping : #CHANGE_SET
     }
   ]
   @UI.identification: [

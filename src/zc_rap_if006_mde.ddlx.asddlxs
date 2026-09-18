@@ -1,0 +1,44 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo: {
+  typeName: '外部数据',
+  typeNamePlural: '外部数据',
+  title: {
+    type: #STANDARD,
+    value: 'ExternalOrderNo'
+  }
+}
+
+annotate entity ZC_RAP_IF006 with
+{
+  @UI.lineItem:       [{ position: 10, label: '外部订单号' }]
+  @UI.selectionField: [{ position: 10 }]
+  @UI.identification: [{ position: 10, label: '外部订单号' }]
+  ExternalOrderNo;
+
+  @UI.lineItem:       [{ position: 20, label: '外部明细号' }]
+  @UI.identification: [{ position: 20, label: '外部明细号' }]
+  ExternalItemNo;
+
+  @UI.lineItem:       [{ position: 30, label: '物料' }]
+  @UI.selectionField: [{ position: 20 }]
+  @UI.identification: [{ position: 30, label: '物料' }]
+  Material;
+
+  @UI.lineItem:       [{ position: 40, label: '金额' }]
+  @UI.identification: [{ position: 40, label: '金额' }]
+  Amount;
+
+  @UI.lineItem:       [{ position: 50, label: '货币' }]
+  @UI.identification: [{ position: 50, label: '货币' }]
+  Currency;
+
+  @UI.lineItem:       [{ position: 60, label: '状态' }]
+  @UI.selectionField: [{ position: 30 }]
+  @UI.identification: [{ position: 60, label: '状态' }]
+  Status;
+
+  @UI.lineItem:       [{ position: 70, label: '来源系统' }]
+  @UI.identification: [{ position: 70, label: '来源系统' }]
+  SourceSystem;
+}

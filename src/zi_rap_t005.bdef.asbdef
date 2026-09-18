@@ -10,7 +10,7 @@ etag master LocalLastChangedAt
 {
   create;
   update;
-  delete;
+  delete ( features : instance );
 
   field ( mandatory : create, readonly : update ) ID;
   field ( mandatory ) Name, Status;

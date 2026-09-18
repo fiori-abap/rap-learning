@@ -1,0 +1,90 @@
+managed implementation in class zbp_i_rap_t006_h unique;
+strict;
+with draft;
+
+define behavior for ZI_RAP_T006_H //alias <alias_name>
+persistent table zrap_t006_h
+draft table zrap_t006_hd
+lock master
+total etag LastChangedAt
+authorization master ( instance )
+//etag master <field_name>
+{
+  create;
+  update;
+  delete;
+  association _Items { create; }
+
+  draft action Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for zrap_t006_h
+  {
+    BatchID = batch_id;
+    BatchName = batch_name;
+    Description = description;
+    Status = status;
+    ProcessingDate = processing_date;
+    ResponsiblePerson = responsible_person;
+    CreatedBy = created_by;
+    CreatedAt = created_at;
+    LastChangedBy = last_changed_by;
+    LastChangedAt = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
+
+define behavior for ZI_RAP_T006_I //alias <alias_name>
+persistent table zrap_t006_i
+draft table zrap_t006_id
+lock dependent by _Header
+authorization dependent by _Header
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) BatchID;
+  association _Header;
+
+  mapping for zrap_t006_i
+  {
+    BatchID = batch_id;
+    ItemID = item_id;
+
+    SourceType = source_type;
+    DocumentNo = document_no;
+    DocumentItem = document_item;
+    DocumentType = document_type;
+    DocumentDate = document_date;
+
+    SalesOrganization = sales_organization;
+    DistributionChannel = distribution_channel;
+    Division = division;
+    Customer = customer;
+
+    Material = material;
+    MaterialDescription = material_description;
+    Plant = plant;
+    StorageLocation = storage_location;
+
+    Quantity = quantity;
+    Unit = unit;
+
+    NetAmount = net_amount;
+    Currency = currency;
+
+    ReferenceDocument = reference_document;
+    ReferenceItem = reference_item;
+
+    ProcessStatus = process_status;
+    CommentText = comment_text;
+
+    CreatedBy = created_by;
+    CreatedAt = created_at;
+    LastChangedBy = last_changed_by;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}

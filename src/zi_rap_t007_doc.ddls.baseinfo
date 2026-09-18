@@ -1,0 +1,8 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZI_RAP_T007_DOCSRC",
+      "ZRAP_T007_A"
+    ]
+  }
+}
