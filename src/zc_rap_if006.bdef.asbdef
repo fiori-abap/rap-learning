@@ -5,4 +5,8 @@ define behavior for ZC_RAP_IF006 alias ExternalData
   use create;
   use update;
   use delete;
+
+  use action sendToCloud;
+  //use action sendToCloudBatch;
+  use action sendToCloudBatchFlat;
 }

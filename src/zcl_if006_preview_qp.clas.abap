@@ -94,18 +94,45 @@ CLASS zcl_if006_preview_qp IMPLEMENTATION.
       CHANGING
         data          = ls_json ).
 
-    "6. 保证分页时记录顺序稳定
-    SORT ls_json-orders BY ExternalOrderNo ExternalItemNo.
+    "6. 根据 Fiori 请求筛选数据
+    DATA lt_filtered TYPE STANDARD TABLE OF zce_if006_preview
+                     WITH EMPTY KEY.
 
-    "7. 返回总记录数：必须是分页前的数量
-    IF io_request->is_total_numb_of_rec_requested( ).
+    DATA(lt_orders) = ls_json-orders.
 
-      io_response->set_total_number_of_records(
-        CONV int8( lines( ls_json-orders ) ) ).
+    DATA(lv_filter) =
+      io_request->get_filter( )->get_as_sql_string( ).
+
+    IF lv_filter IS INITIAL.
+
+      "没有筛选条件：保留全部 iFlow 数据
+      lt_filtered = lt_orders.
+
+    ELSE.
+
+      "有筛选条件：保留完整的 AND / OR 关系
+      SELECT FROM @lt_orders AS source
+        FIELDS *
+        WHERE (lv_filter)
+        INTO TABLE @lt_filtered.
 
     ENDIF.
 
-    "8. 根据 Fiori 的分页要求返回数据
+
+    "7. 保证分页时记录顺序稳定
+    SORT lt_filtered BY ExternalOrderNo ExternalItemNo.
+
+
+    "8. 返回筛选后的总记录数（分页前）
+    IF io_request->is_total_numb_of_rec_requested( ).
+
+      io_response->set_total_number_of_records(
+        CONV int8( lines( lt_filtered ) ) ).
+
+    ENDIF.
+
+
+    "9. 根据 Fiori 的分页要求返回数据
     IF io_request->is_data_requested( ).
 
       DATA(lv_offset) =
@@ -118,10 +145,10 @@ CLASS zcl_if006_preview_qp IMPLEMENTATION.
 
       DATA(lv_last) = COND i(
         WHEN lv_top = if_rap_query_paging=>page_size_unlimited
-        THEN lines( ls_json-orders )
+        THEN lines( lt_filtered )
         ELSE lv_first + CONV i( lv_top ) - 1 ).
 
-      LOOP AT ls_json-orders INTO DATA(ls_order)
+      LOOP AT lt_filtered INTO DATA(ls_order)
            FROM lv_first TO lv_last.
 
         APPEND ls_order TO lt_result.

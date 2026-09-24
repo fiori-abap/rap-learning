@@ -9,6 +9,14 @@ etag master LocalLastChangedAt
   update;
   delete;
 
+  action sendToCloud parameter ZA_IF006_SEND_PARAM;
+
+  static action sendToCloudBatch
+  deep parameter ZA_IF006_BATCH_PARAM;
+
+  static action sendToCloudBatchFlat
+  parameter ZA_IF006_BATCH_FLAT;
+
   field ( readonly )
     CreatedBy,
     CreatedAt,

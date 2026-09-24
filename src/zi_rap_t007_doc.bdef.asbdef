@@ -11,25 +11,28 @@ authorization master ( instance )
   update;
 
   field ( readonly )
-    SourceType,
-    DocumentNo,
-    DocumentType,
-    DocumentDate,
-    SalesOrganization,
-    Customer,
-    CustomerName,
-    CreatedDate,
-    CreatedBy,
-    DistributionChannel,
-    Division,
-    ShippingPoint,
-    PlannedDate,
-    SourceDescription,
-    AddonCreatedBy,
-    AddonCreatedAt,
-    AddonLastChangedBy,
-    AddonLastChangedAt,
-    LocalLastChangedAt;
+  SourceType,
+  DocumentNo,
+  SalesOrderNo,
+  DocumentType,
+  DocumentDate,
+  SalesOrganization,
+  Customer,
+  CustomerName,
+  CreatedDate,
+  CreatedBy,
+  DistributionChannel,
+  Division,
+  ShippingPoint,
+  PlannedDate,
+  SourceDescription,
+  SourceSort,
+  RelationSort,
+  AddonCreatedBy,
+  AddonCreatedAt,
+  AddonLastChangedBy,
+  AddonLastChangedAt,
+  LocalLastChangedAt;
 
   draft action Edit;
   draft action Activate;
