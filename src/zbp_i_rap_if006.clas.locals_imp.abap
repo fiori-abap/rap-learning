@@ -237,11 +237,16 @@ CLASS lhc_externaldata IMPLEMENTATION.
     DATA ls_batch_result TYPE ty_batch_result.
 
     DATA:
-      ls_payload  TYPE ty_payload,
-      lo_client   TYPE REF TO if_http_client,
-      lv_status   TYPE i,
-      lv_response TYPE string,
-      lv_error    TYPE string.
+      ls_payload           TYPE ty_payload,
+      lo_client            TYPE REF TO if_http_client,
+      lv_failed_index_text TYPE string,
+      lv_failed_index      TYPE i,
+      lv_status            TYPE i,
+      lv_response          TYPE string,
+      lv_error             TYPE string.
+
+    DATA:
+      ls_failed_order      TYPE ty_order.
 
     "接收 Fiori 传入的订单主键 JSON
     TYPES:
@@ -265,9 +270,6 @@ CLASS lhc_externaldata IMPLEMENTATION.
         lv_status,
         lv_response,
         lv_error.
-
-      ls_payload-write_mode =
-        ls_batch-%param-WriteMode.
 
       "------------------------------------------------
       " 2. 取得普通 Action 参数
@@ -529,7 +531,125 @@ CLASS lhc_externaldata IMPLEMENTATION.
 
             IF lv_status < 200 OR lv_status >= 300.
 
-              lv_error = |Cloud送信失敗 HTTP { lv_status }|.
+              CLEAR:
+                  lv_failed_index_text,
+                  lv_failed_index,
+                  ls_failed_order.
+
+              "------------------------------------------------
+              " 1. iFlow 事前查重：
+              "    已经一次找出了全部重复 Key
+              "------------------------------------------------
+              IF lv_response CS 'Cloud登録済み:'.
+
+                "------------------------------------------------
+                " iFlow 返回的重复 Key 拆成多条 RAP Message
+                "------------------------------------------------
+                DATA lt_dup_lines TYPE STANDARD TABLE OF string
+                                  WITH EMPTY KEY.
+
+                DATA lt_dup_keys TYPE SORTED TABLE OF string
+                                 WITH UNIQUE KEY table_line.
+
+                SPLIT lv_response
+                  AT cl_abap_char_utilities=>newline
+                  INTO TABLE lt_dup_lines.
+
+                LOOP AT lt_dup_lines INTO DATA(lv_dup_line).
+
+                  CONDENSE lv_dup_line.
+
+                  IF lv_dup_line CS ' / '.
+
+                    "去掉 Groovy 异常自动附加的：
+                    "@ line xx in xxx.groovy ...
+                    FIND FIRST OCCURRENCE OF '@'
+                      IN lv_dup_line
+                      MATCH OFFSET DATA(lv_at_offset).
+
+                    IF sy-subrc = 0.
+                      lv_dup_line = lv_dup_line(lv_at_offset).
+                      CONDENSE lv_dup_line.
+                    ENDIF.
+
+                    INSERT lv_dup_line
+                      INTO TABLE lt_dup_keys.
+
+                  ENDIF.
+
+                ENDLOOP.
+
+                "这次 Action 整体判定失败
+                APPEND VALUE #(
+                  %cid = ls_batch-%cid
+                ) TO failed-externaldata.
+
+
+                "每一个重复 Key 独立返回一条 Message
+                LOOP AT lt_dup_keys INTO DATA(lv_dup_key).
+
+                  APPEND VALUE #(
+                    %cid = ls_batch-%cid
+                    %msg = new_message_with_text(
+                      severity = if_abap_behv_message=>severity-error
+                      text     = |Cloud登録済み: { lv_dup_key }|
+                    )
+                  ) TO reported-externaldata.
+
+                ENDLOOP.
+
+                "已经在这里完成 failed / reported，
+                "不要再跑下面统一的 lv_error 处理
+                CONTINUE.
+
+                "------------------------------------------------
+                " 2. Atomic JDBC 执行时才发生 duplicate
+                "    根据 access sequence 找具体失败 Key
+                "------------------------------------------------
+              ELSEIF lv_response CS 'unique constraint violated'.
+
+                FIND REGEX 'access tag sequence\s*:\s*([0-9]+)'
+                  IN lv_response
+                  SUBMATCHES lv_failed_index_text.
+
+                IF sy-subrc = 0
+                   AND lv_failed_index_text IS NOT INITIAL.
+
+                  lv_failed_index =
+                    CONV i( lv_failed_index_text ).
+
+                  READ TABLE ls_payload-orders
+                    INDEX lv_failed_index
+                    INTO ls_failed_order.
+
+                ENDIF.
+
+                IF ls_failed_order IS NOT INITIAL.
+
+                  lv_error =
+                    |Cloud登録済み: { ls_failed_order-external_order_no } / { ls_failed_order-external_item_no }|.
+
+                ELSE.
+
+                  lv_error =
+                    'Cloudに登録済みのデータが含まれています'.
+
+                ENDIF.
+
+
+                "------------------------------------------------
+                " 3. 其他 HTTP / iFlow 错误
+                "------------------------------------------------
+              ELSEIF lv_response IS NOT INITIAL.
+
+                lv_error = lv_response.
+
+              ELSE.
+
+                lv_error =
+                  |Cloud送信失敗 HTTP { lv_status }|.
+
+              ENDIF.
 
             ELSE.
 
@@ -606,17 +726,7 @@ CLASS lhc_externaldata IMPLEMENTATION.
             text     = lv_error )
         ) TO reported-externaldata.
 
-      ELSE.
-
-        APPEND VALUE #(
-          %cid = ls_batch-%cid
-          %msg = new_message_with_text(
-            severity = if_abap_behv_message=>severity-success
-            text = |Cloud登録成功: { ls_batch_result-success_count }件| )
-        ) TO reported-externaldata.
-
       ENDIF.
-
     ENDLOOP.
   ENDMETHOD.
 

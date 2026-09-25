@@ -47,6 +47,24 @@ CLASS zcl_if006_preview_qp IMPLEMENTATION.
       name  = 'Accept'
       value = 'application/json' ).
 
+    "Fiori Filter → HANA Cloud Filter
+    DATA(lv_cloud_filter) =
+      io_request->get_filter( )->get_as_sql_string( ).
+
+    REPLACE ALL OCCURRENCES OF
+      'EXTERNALORDERNO'
+      IN lv_cloud_filter
+      WITH '"ORDER_NO"'.
+
+    IF lv_cloud_filter IS NOT INITIAL.
+
+      lo_client->request->set_header_field(
+        name  = 'X-Filter-SQL'
+        value = lv_cloud_filter ).
+
+    ENDIF.
+
+
     lo_client->send(
       EXCEPTIONS
         OTHERS = 1 ).
@@ -94,40 +112,22 @@ CLASS zcl_if006_preview_qp IMPLEMENTATION.
       CHANGING
         data          = ls_json ).
 
-    "6. 根据 Fiori 请求筛选数据
-    DATA lt_filtered TYPE STANDARD TABLE OF zce_if006_preview
-                     WITH EMPTY KEY.
+"6. 接收 HANA Cloud 查询结果
+DATA lt_orders TYPE STANDARD TABLE OF zce_if006_preview
+               WITH EMPTY KEY.
 
-    DATA(lt_orders) = ls_json-orders.
-
-    DATA(lv_filter) =
-      io_request->get_filter( )->get_as_sql_string( ).
-
-    IF lv_filter IS INITIAL.
-
-      "没有筛选条件：保留全部 iFlow 数据
-      lt_filtered = lt_orders.
-
-    ELSE.
-
-      "有筛选条件：保留完整的 AND / OR 关系
-      SELECT FROM @lt_orders AS source
-        FIELDS *
-        WHERE (lv_filter)
-        INTO TABLE @lt_filtered.
-
-    ENDIF.
+lt_orders = ls_json-orders.
 
 
     "7. 保证分页时记录顺序稳定
-    SORT lt_filtered BY ExternalOrderNo ExternalItemNo.
+    SORT lt_orders BY ExternalOrderNo ExternalItemNo.
 
 
     "8. 返回筛选后的总记录数（分页前）
     IF io_request->is_total_numb_of_rec_requested( ).
 
       io_response->set_total_number_of_records(
-        CONV int8( lines( lt_filtered ) ) ).
+        CONV int8( lines( lt_orders ) ) ).
 
     ENDIF.
 
@@ -145,10 +145,10 @@ CLASS zcl_if006_preview_qp IMPLEMENTATION.
 
       DATA(lv_last) = COND i(
         WHEN lv_top = if_rap_query_paging=>page_size_unlimited
-        THEN lines( lt_filtered )
+        THEN lines( lt_orders )
         ELSE lv_first + CONV i( lv_top ) - 1 ).
 
-      LOOP AT lt_filtered INTO DATA(ls_order)
+      LOOP AT lt_orders INTO DATA(ls_order)
            FROM lv_first TO lv_last.
 
         APPEND ls_order TO lt_result.
