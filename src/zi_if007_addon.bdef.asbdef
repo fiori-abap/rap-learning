@@ -1,0 +1,31 @@
+managed implementation in class zbp_i_if007_addon unique;
+strict;
+
+define behavior for ZI_IF007_ADDON alias Addon
+persistent table zrap_if007
+lock master
+authorization master ( global )
+{
+  create;
+  update;
+  static action saveBatch
+    parameter ZAE_IF007_SAVE_REQ
+    result [1] ZAE_IF007_SAVE_RES;
+
+  field ( readonly : update )
+  SalesOrder,
+  SalesOrderItem;
+
+  mapping for zrap_if007
+  {
+    SalesOrder = sales_order;
+    SalesOrderItem = sales_order_item;
+    FollowUpDate = follow_up_date;
+    CommentText = comment_text;
+    SapStatus = sap_status;
+    CloudStatus = cloud_status;
+    SyncStatus = sync_status;
+    LastError = last_error;
+    LastProcessedAt = last_processed_at;
+  }
+}

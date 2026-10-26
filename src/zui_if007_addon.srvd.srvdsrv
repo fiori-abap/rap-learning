@@ -1,0 +1,4 @@
+@EndUserText.label: 'IF007 Add-on Maintenance Service'
+define service ZUI_IF007_ADDON {
+  expose ZC_IF007_ADDON as Addon;
+}

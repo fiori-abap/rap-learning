@@ -1,0 +1,9 @@
+projection;
+strict;
+
+define behavior for ZC_IF007_ADDON alias Addon
+{
+  use create;
+  use update;
+  use action saveBatch;
+}

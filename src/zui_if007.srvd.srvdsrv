@@ -1,0 +1,4 @@
+@EndUserText.label: 'IF007 UI Service'
+define service ZUI_IF007 {
+  expose ZCE_IF007_OVERVIEW as Overview;
+}
